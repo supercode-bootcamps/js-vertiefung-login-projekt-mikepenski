@@ -12,7 +12,8 @@ const loginForm = document.getElementById("loginForm");
 const loginUserName = document.getElementById("username");
 //const loginPassword = document.getElementById("password");
 const loginModalSubmit = document.getElementById("submit");
-const logoutLink = document.getElementById("log-out")
+const logoutLink = document.getElementById("log-out");
+const usernameContainer = document.querySelector(".username");
 
 
 /*
@@ -30,8 +31,9 @@ function setCookie(name, value, days) {
     document.cookie = name + "=" + value + ";path=/;expires=" + d.toGMTString();
 }
 
-function deleteCookie(name) { setCookie(name, '', -1); }
-
+function deleteCookie(name) { 
+    setCookie(name, '', -1); 
+}
 
 /*
 * check user login input
@@ -80,16 +82,31 @@ let checkLogin = () => {
 
             if(userINputPassword == user.secret){
                 console.log("success");
-                document.cookie = 'userLogin=1; path=/;';
-                //setCookie("userLogin", 1, 365)
-                if ('1' === getCookie('userLogin')) {
-                    console.log("test");
+                //usernameContainer.innerHTML = user.name;
+                //document.cookie = 'userLogin=1; path=/;';
+               
+                let cookieValue = {
+                    value: 1, name: user.name
+                }
+                cookieValue = JSON.stringify(cookieValue);
+
+                setCookie("userLogin", cookieValue, 365);
+
+                let myCookie = getCookie('userLogin');
+                myCookie = decodeURIComponent(myCookie);
+                myCookie = JSON.parse(myCookie);
+
+                console.log(myCookie);
+
+                if (1 === myCookie.value) {
                     loginModal.classList.add("d-none")
                 }
+
+              
             }
 
         } else {
-            errorMessage(true)
+            errorMessage(true);
         }
 }
 
@@ -111,4 +128,19 @@ logoutLink.addEventListener("click", (e) => {
 })
 
 
+
+let myCookie = getCookie('userLogin');
+
+if(myCookie){
+
+    myCookie = decodeURIComponent(myCookie);
+    myCookie = JSON.parse(myCookie);
+
+    console.log(myCookie);
+
+    if (1 === myCookie.value) {
+        loginModal.classList.add("d-none")
+    }
+
+}
 
