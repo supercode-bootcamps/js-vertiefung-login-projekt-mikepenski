@@ -1,0 +1,81 @@
+#loginModal {
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    outline: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .modal-dialog {
+        position: relative;
+        width: auto;
+        max-width: 1000px;
+        margin: 1.75rem auto;
+        .modal-content{
+            background: $primary-light;
+            padding: 4rem 10rem;
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            width: 100%;
+            border: 1px solid rgba(0,0,0,0.2);
+            border-radius: 10px;
+            outline: 0;
+            h2{
+                color: $primary;
+                font-size: 3rem;
+                display: block;
+                margin-bottom: 2rem;
+                text-align: center;
+            }
+            #loginForm{
+                position: relative;
+                input{
+                    display: block;
+                    width: 100%;
+                    background: #C4C4C4;
+                    olor: #8985A8;
+                    font-size: 30px;
+                    line-height: 40px;
+                    padding: 10px 23px;
+                    width: 500px;
+                    margin-bottom: 1.5rem;
+                    border: none;
+                    &[type="submit"]{
+                        background: $secondary;
+                        text-transform: uppercase;
+                        &:hover{
+                            cursor: pointer;
+                        }
+                    }
+                    &.alert{
+                        background-image: radial-gradient(red 15%, transparent 16%);
+                        background-size: 1em 1em;
+                        background-position: top right;
+                        background-repeat: no-repeat
+                    }
+                }
+                #errorMessage{
+                    font-size: 1.25rem;
+                    color: red;
+                    position: absolute;
+                    bottom: 0;
+                    transform: translateY(2rem);
+                }
+            }
+        }
+    }
+ 
+  }
+
