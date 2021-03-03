@@ -7,6 +7,12 @@
 body{
     background: $primary;
     font-family: 'Roboto Mono', monospace;
+    &.modalOpen{
+        header, main{
+            filter: blur(8px);
+            -webkit-filter: blur(8px);
+        }
+    }
 }
 
 ul{

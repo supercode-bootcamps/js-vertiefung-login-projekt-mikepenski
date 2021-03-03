@@ -7,6 +7,8 @@ const USERS = [
 ];
 
 
+
+const body = document.querySelector("body");
 const loginModal = document.getElementById("loginModal");
 const loginForm = document.getElementById("loginForm");
 const loginUserName = document.getElementById("username");
@@ -38,7 +40,6 @@ function deleteCookie(name) {
 /*
 * check user login input
 */
-
 let errorMessage = (showmessage) => {
 
     if(showmessage == true){
@@ -67,11 +68,21 @@ let errorMessage = (showmessage) => {
 }
 
 /*
-* check user login
+* write username to navbar and remove css classes
+*/
+let welcomeUser = (userName) => {
+    body.classList.remove("modalOpen");
+    loginModal.classList.add("d-none");
+    usernameContainer.innerHTML = userName;
+
+}
+
+/*
+* check user login form actions
 */
 let checkLogin = () => {
 
-    let userInputName = document.getElementById("username").value;
+    let userInputName = document.getElementById("username").value.toLowerCase();
     let userINputPassword = document.getElementById("password").value;
 
     const user = USERS.find(item => item.name === userInputName);
@@ -81,28 +92,22 @@ let checkLogin = () => {
             errorMessage(false)
 
             if(userINputPassword == user.secret){
-                console.log("success");
-                //usernameContainer.innerHTML = user.name;
-                //document.cookie = 'userLogin=1; path=/;';
-               
+
                 let cookieValue = {
-                    value: 1, name: user.name
+                    value: 1, username: user.name
                 }
                 cookieValue = JSON.stringify(cookieValue);
-
+   
                 setCookie("userLogin", cookieValue, 365);
 
                 let myCookie = getCookie('userLogin');
-                myCookie = decodeURIComponent(myCookie);
-                myCookie = JSON.parse(myCookie);
 
-                console.log(myCookie);
+                if(typeof myCookie !== 'undefined'){
 
-                if (1 === myCookie.value) {
-                    loginModal.classList.add("d-none")
+                    checkUserisLoggedin();
+
                 }
 
-              
             }
 
         } else {
@@ -110,17 +115,40 @@ let checkLogin = () => {
         }
 }
 
+/*
+* check user is logged in
+*/
+let checkUserisLoggedin = () => {
+    myCookie = decodeURIComponent(myCookie);
+    myCookie = JSON.parse(myCookie);
+    if (1 === myCookie.value) {
+        //get username and call weclome user function
+        const userName = myCookie.username;
+        welcomeUser(userName);
+    }
+}
 
+
+/*
+* check if cookie is set and call checkUserisLoggedin function
+*/
+
+let myCookie = getCookie('userLogin');
+if(typeof myCookie !== 'undefined'){
+    checkUserisLoggedin();
+}
+
+/*
+* event listener for login form
+*/
 loginModal.addEventListener("submit", (e) => {
-    //USERS.find(checkLogin);
     checkLogin();
     e.preventDefault();
 })
 
-
-
-
-
+/*
+* event listener for logout and delete cookie
+*/
 logoutLink.addEventListener("click", (e) => {
     e.preventDefault();
     deleteCookie("userLogin");
@@ -128,19 +156,4 @@ logoutLink.addEventListener("click", (e) => {
 })
 
 
-
-let myCookie = getCookie('userLogin');
-
-if(myCookie){
-
-    myCookie = decodeURIComponent(myCookie);
-    myCookie = JSON.parse(myCookie);
-
-    console.log(myCookie);
-
-    if (1 === myCookie.value) {
-        loginModal.classList.add("d-none")
-    }
-
-}
 
